@@ -39,9 +39,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var commander_1 = require("commander");
 var chalk_1 = require("chalk");
+var readline_1 = require("readline");
+function askQuestion(query) {
+    var rl = (0, readline_1.createInterface)({
+        input: process.stdin,
+        output: process.stdout
+    });
+    return new Promise(function (resolve) {
+        return rl.question(query, function (ans) {
+            rl.close();
+            resolve(ans);
+        });
+    });
+}
 var fs_1 = require("fs");
+// const COMMANDS_LIST = "[h]-help, [s]-search, [q]-quit";
+var COMMANDS_LIST = "[h]-help, [q]-quit";
 var program = new commander_1.Command();
-program.version("0.0.2");
+program.version("0.0.3");
 program
     .option("-d, --debug", "output extra debugging")
     .option("-w, --welcome", "Welcome message")
@@ -55,6 +70,21 @@ if (options.file)
 if (options.welcome) {
     console.log((0, chalk_1.blue)("Hello world!"));
 }
+var handleAnswer = function (answer) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (answer) {
+            case "h":
+                console.log("List of options will be here soon.", (0, chalk_1.grey)("For now just use "), (0, chalk_1.blue)("how"));
+                break;
+            case "q":
+                process.exit();
+                break;
+            default:
+                console.log("Unknown command. Sorry.");
+        }
+        return [2 /*return*/];
+    });
+}); };
 var doReadFile = function (_a) {
     var filename = _a.filename;
     return __awaiter(void 0, void 0, void 0, function () {
@@ -74,20 +104,19 @@ var doReadFile = function (_a) {
     });
 };
 var run = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var answer;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 console.log("");
-                console.log("");
-                console.log("");
+                console.log((0, chalk_1.grey)("package.json scripts"));
                 console.log(Array.from({ length: 60 })
                     .map(function () { return "-"; })
                     .join(""));
+                console.log("");
                 return [4 /*yield*/, doReadFile({
                         filename: "package.json"
                     }).then(function (data) {
-                        console.log((0, chalk_1.grey)("package.json scripts"));
-                        console.log("");
                         if (typeof data === "string") {
                             var config = JSON.parse(data);
                             console.log(config.scripts || "No scripts");
@@ -104,14 +133,14 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                 console.log("");
                 console.log("");
                 console.log("");
+                console.log((0, chalk_1.grey)("" + (options.file || "README.md")));
                 console.log(Array.from({ length: 60 })
                     .map(function () { return "-"; })
                     .join(""));
+                console.log("");
                 return [4 /*yield*/, doReadFile({
                         filename: options.file || "README.md"
                     }).then(function (data) {
-                        console.log((0, chalk_1.grey)("First part of " + (options.file || "README.md")));
-                        console.log("");
                         if (typeof data === "string") {
                             console.log(data.substr(0, 500));
                             return;
@@ -127,8 +156,18 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                 console.log("");
                 console.log("");
                 console.log("");
-                return [2 /*return*/];
+                _a.label = 3;
+            case 3:
+                if (!true) return [3 /*break*/, 5];
+                console.log((0, chalk_1.blue)("What's next? " + COMMANDS_LIST));
+                return [4 /*yield*/, askQuestion("")];
+            case 4:
+                answer = _a.sent();
+                handleAnswer(answer);
+                return [3 /*break*/, 3];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
+console.clear();
 run();

@@ -1,10 +1,29 @@
 #! /usr/bin/env node
 import { Command } from "commander";
 import { blue, grey } from "chalk";
+import { createInterface } from "readline";
+
+function askQuestion(query: string) {
+  const rl = createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise<string>((resolve) =>
+    rl.question(query, (ans: string) => {
+      rl.close();
+      resolve(ans);
+    })
+  );
+}
 
 import { readFile } from "fs";
+
+// const COMMANDS_LIST = "[h]-help, [s]-search, [q]-quit";
+const COMMANDS_LIST = "[h]-help, [q]-quit";
+
 const program = new Command();
-program.version("0.0.2");
+program.version("0.0.3");
 
 program
   .option("-d, --debug", "output extra debugging")
@@ -20,6 +39,23 @@ if (options.file) console.log(`- ${options.file}`);
 if (options.welcome) {
   console.log(blue("Hello world!"));
 }
+
+const handleAnswer = async (answer: string) => {
+  switch (answer) {
+    case "h":
+      console.log(
+        "List of options will be here soon.",
+        grey("For now just use "),
+        blue("how")
+      );
+      break;
+    case "q":
+      process.exit();
+      break;
+    default:
+      console.log("Unknown command. Sorry.");
+  }
+};
 
 type DoReadFileArgs = {
   filename: string;
@@ -38,18 +74,16 @@ const doReadFile = async ({ filename }: DoReadFileArgs) => {
 
 const run = async () => {
   console.log("");
-  console.log("");
-  console.log("");
+  console.log(grey("package.json scripts"));
   console.log(
     Array.from({ length: 60 })
       .map(() => "-")
       .join("")
   );
+  console.log("");
   await doReadFile({
     filename: "package.json",
   }).then((data) => {
-    console.log(grey("package.json scripts"));
-    console.log("");
     if (typeof data === "string") {
       const config = JSON.parse(data);
       console.log(config.scripts || "No scripts");
@@ -66,16 +100,16 @@ const run = async () => {
   console.log("");
   console.log("");
   console.log("");
+  console.log(grey(`${options.file || "README.md"}`));
   console.log(
     Array.from({ length: 60 })
       .map(() => "-")
       .join("")
   );
+  console.log("");
   await doReadFile({
     filename: options.file || "README.md",
   }).then((data) => {
-    console.log(grey(`First part of ${options.file || "README.md"}`));
-    console.log("");
     if (typeof data === "string") {
       console.log(data.substr(0, 500));
       return;
@@ -91,6 +125,12 @@ const run = async () => {
   console.log("");
   console.log("");
   console.log("");
+  while (true) {
+    console.log(blue(`What's next? ${COMMANDS_LIST}`));
+    const answer = await askQuestion("");
+    handleAnswer(answer);
+  }
 };
 
+console.clear();
 run();
