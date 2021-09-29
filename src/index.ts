@@ -1,23 +1,10 @@
 #! /usr/bin/env node
 import { Command } from "commander";
 import { blue, grey } from "chalk";
-import { createInterface } from "readline";
-
-function askQuestion(query: string) {
-  const rl = createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  return new Promise<string>((resolve) =>
-    rl.question(query, (ans: string) => {
-      rl.close();
-      resolve(ans);
-    })
-  );
-}
-
-import { readFile } from "fs";
+import emptyLine from "./utils/emptyLine";
+import delimiter from "./utils/delimiter";
+import doReadFile from "./utils/doReadFile";
+import askQuestion from "./utils/askQuestion";
 
 // const COMMANDS_LIST = "[h]-help, [s]-search, [q]-quit";
 const COMMANDS_LIST = "[h]-help, [q]-quit";
@@ -44,9 +31,9 @@ const handleAnswer = async (answer: string) => {
   switch (answer) {
     case "h":
       console.log(
-        "List of options will be here soon.",
-        grey("For now just use "),
-        blue("how")
+        grey("List of options will be here soon."),
+        "Use commands:",
+        blue("how, how --help")
       );
       break;
     case "q":
@@ -57,30 +44,11 @@ const handleAnswer = async (answer: string) => {
   }
 };
 
-type DoReadFileArgs = {
-  filename: string;
-};
-
-const doReadFile = async ({ filename }: DoReadFileArgs) => {
-  return await new Promise<string | Buffer>((res, rej) => {
-    readFile(filename, "utf-8", (err: any, data: string | Buffer): void => {
-      if (err) {
-        return rej(err);
-      }
-      return res(data);
-    });
-  });
-};
-
 const run = async () => {
-  console.log("");
+  emptyLine();
   console.log(grey("package.json scripts"));
-  console.log(
-    Array.from({ length: 60 })
-      .map(() => "-")
-      .join("")
-  );
-  console.log("");
+  delimiter();
+  emptyLine();
   await doReadFile({
     filename: "package.json",
   }).then((data) => {
@@ -91,22 +59,12 @@ const run = async () => {
     }
     console.log(options.file, data.toJSON());
   });
-  console.log("");
-  console.log(
-    Array.from({ length: 60 })
-      .map(() => "-")
-      .join("")
-  );
-  console.log("");
-  console.log("");
-  console.log("");
+  emptyLine();
+  delimiter();
+  emptyLine(3);
   console.log(grey(`${options.file || "README.md"}`));
-  console.log(
-    Array.from({ length: 60 })
-      .map(() => "-")
-      .join("")
-  );
-  console.log("");
+  delimiter();
+  emptyLine();
   await doReadFile({
     filename: options.file || "README.md",
   }).then((data) => {
@@ -116,15 +74,9 @@ const run = async () => {
     }
     console.log(options.file, data.toJSON());
   });
-  console.log("");
-  console.log(
-    Array.from({ length: 60 })
-      .map(() => "-")
-      .join("")
-  );
-  console.log("");
-  console.log("");
-  console.log("");
+  emptyLine();
+  delimiter();
+  emptyLine(3);
   while (true) {
     console.log(blue(`What's next? ${COMMANDS_LIST}`));
     const answer = await askQuestion("");

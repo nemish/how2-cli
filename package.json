@@ -4,13 +4,17 @@
   "main": "index.js",
   "author": "Yaroslav Melnichuk",
   "license": "MIT",
+  "volta": {
+    "node": "14.15.4",
+    "yarn": "1.22.5"
+  },
   "bin": {
-    "how": "./index.js"
+    "how": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc index.ts",
-    "watch": "tsc --watch index.ts",
-    "start": "node index.js"
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "chalk": "^4.1.2",

@@ -39,20 +39,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var commander_1 = require("commander");
 var chalk_1 = require("chalk");
-var readline_1 = require("readline");
-function askQuestion(query) {
-    var rl = (0, readline_1.createInterface)({
-        input: process.stdin,
-        output: process.stdout
-    });
-    return new Promise(function (resolve) {
-        return rl.question(query, function (ans) {
-            rl.close();
-            resolve(ans);
-        });
-    });
-}
-var fs_1 = require("fs");
+var emptyLine_1 = require("./utils/emptyLine");
+var delimiter_1 = require("./utils/delimiter");
+var doReadFile_1 = require("./utils/doReadFile");
+var askQuestion_1 = require("./utils/askQuestion");
 // const COMMANDS_LIST = "[h]-help, [s]-search, [q]-quit";
 var COMMANDS_LIST = "[h]-help, [q]-quit";
 var program = new commander_1.Command();
@@ -74,7 +64,7 @@ var handleAnswer = function (answer) { return __awaiter(void 0, void 0, void 0, 
     return __generator(this, function (_a) {
         switch (answer) {
             case "h":
-                console.log("List of options will be here soon.", (0, chalk_1.grey)("For now just use "), (0, chalk_1.blue)("how"));
+                console.log((0, chalk_1.grey)("List of options will be here soon."), "Use commands:", (0, chalk_1.blue)("how, how --help"));
                 break;
             case "q":
                 process.exit();
@@ -85,36 +75,16 @@ var handleAnswer = function (answer) { return __awaiter(void 0, void 0, void 0, 
         return [2 /*return*/];
     });
 }); };
-var doReadFile = function (_a) {
-    var filename = _a.filename;
-    return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0: return [4 /*yield*/, new Promise(function (res, rej) {
-                        (0, fs_1.readFile)(filename, "utf-8", function (err, data) {
-                            if (err) {
-                                return rej(err);
-                            }
-                            return res(data);
-                        });
-                    })];
-                case 1: return [2 /*return*/, _b.sent()];
-            }
-        });
-    });
-};
 var run = function () { return __awaiter(void 0, void 0, void 0, function () {
     var answer;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log("");
+                (0, emptyLine_1["default"])();
                 console.log((0, chalk_1.grey)("package.json scripts"));
-                console.log(Array.from({ length: 60 })
-                    .map(function () { return "-"; })
-                    .join(""));
-                console.log("");
-                return [4 /*yield*/, doReadFile({
+                (0, delimiter_1["default"])();
+                (0, emptyLine_1["default"])();
+                return [4 /*yield*/, (0, doReadFile_1["default"])({
                         filename: "package.json"
                     }).then(function (data) {
                         if (typeof data === "string") {
@@ -126,19 +96,13 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                     })];
             case 1:
                 _a.sent();
-                console.log("");
-                console.log(Array.from({ length: 60 })
-                    .map(function () { return "-"; })
-                    .join(""));
-                console.log("");
-                console.log("");
-                console.log("");
+                (0, emptyLine_1["default"])();
+                (0, delimiter_1["default"])();
+                (0, emptyLine_1["default"])(3);
                 console.log((0, chalk_1.grey)("" + (options.file || "README.md")));
-                console.log(Array.from({ length: 60 })
-                    .map(function () { return "-"; })
-                    .join(""));
-                console.log("");
-                return [4 /*yield*/, doReadFile({
+                (0, delimiter_1["default"])();
+                (0, emptyLine_1["default"])();
+                return [4 /*yield*/, (0, doReadFile_1["default"])({
                         filename: options.file || "README.md"
                     }).then(function (data) {
                         if (typeof data === "string") {
@@ -149,18 +113,14 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                     })];
             case 2:
                 _a.sent();
-                console.log("");
-                console.log(Array.from({ length: 60 })
-                    .map(function () { return "-"; })
-                    .join(""));
-                console.log("");
-                console.log("");
-                console.log("");
+                (0, emptyLine_1["default"])();
+                (0, delimiter_1["default"])();
+                (0, emptyLine_1["default"])(3);
                 _a.label = 3;
             case 3:
                 if (!true) return [3 /*break*/, 5];
                 console.log((0, chalk_1.blue)("What's next? " + COMMANDS_LIST));
-                return [4 /*yield*/, askQuestion("")];
+                return [4 /*yield*/, (0, askQuestion_1["default"])("")];
             case 4:
                 answer = _a.sent();
                 handleAnswer(answer);

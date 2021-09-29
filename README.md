@@ -1,3 +1,16 @@
-* Getting started
+## Getting started
+How2 (or just how) is a cli tool to help you better communicate with the repository.
+To develop locally:
+```sh
+  yarn
+  yarn watch
+  # in another shell session
+  ./dist/index.js
+```
 
-How2 (or just how) is an cli tool to help you better communicate with the repository.
+## Deployment
+To publish to npm commit changes and do
+```sh
+  # commit and push your changes
+  npm publish --access public
+```
