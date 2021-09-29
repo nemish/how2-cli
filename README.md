@@ -12,5 +12,6 @@ To develop locally:
 To publish to npm commit changes and do
 ```sh
   # commit and push your changes
-  npm publish --access public
+  npm version patch # or minor/release
+  npm publish
 ```
