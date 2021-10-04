@@ -24,5 +24,5 @@ yarn watch
 To publish to npm commit changes and do
 ```sh
 # commit and push your changes
-yarn publish
+yarn publish-package
 ```
