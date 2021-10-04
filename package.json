@@ -15,7 +15,7 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "start": "node dist/index.js",
-    "publish": "npm version patch && npm publish"
+    "publish-package": "npm version patch && npm publish"
   },
   "dependencies": {
     "chalk": "^4.1.2",
