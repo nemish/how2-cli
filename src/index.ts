@@ -1,21 +1,22 @@
 #! /usr/bin/env node
-import { Command } from "commander";
-import { blue, grey } from "chalk";
-import emptyLine from "./utils/emptyLine";
-import delimiter from "./utils/delimiter";
-import doReadFile from "./utils/doReadFile";
-import askQuestion from "./utils/askQuestion";
+import { Command } from 'commander';
+import { blue, cyanBright, grey, yellow } from 'chalk';
+import askQuestion from './utils/askQuestion';
+import showScripts from './utils/showScripts';
+import showReadme from './utils/showReadme';
 
-// const COMMANDS_LIST = "[h]-help, [s]-search, [q]-quit";
-const COMMANDS_LIST = "[h]-help, [q]-quit";
+const COMMANDS_LIST = [
+  '[a]-show all',
+  '[rdm]-readme',
+  '[sc]-show scripts',
+  '[h]-help',
+  '[q]-quit',
+];
 
 const program = new Command();
-program.version("0.0.3");
+program.version('0.0.3');
 
-program
-  .option("-d, --debug", "output extra debugging")
-  .option("-w, --welcome", "Welcome message")
-  .option("-f, --file <type>", "filename");
+program.option('-d, --debug', 'output args');
 
 program.parse(process.argv);
 
@@ -23,64 +24,45 @@ const options = program.opts();
 if (options.debug) console.log(options);
 if (options.file) console.log(`- ${options.file}`);
 
-if (options.welcome) {
-  console.log(blue("Hello world!"));
-}
-
 const handleAnswer = async (answer: string) => {
   switch (answer) {
-    case "h":
+    case 'h':
       console.log(
-        grey("List of options will be here soon."),
-        "Use commands:",
-        blue("how, how --help")
+        grey('List of options will be here soon.'),
+        'Use commands:',
+        blue('how, how --help'),
       );
       break;
-    case "q":
-      process.exit();
+    case 'sc':
+      console.clear();
+      await showScripts();
       break;
+    case 'rdm':
+      console.clear();
+      await showReadme({ full: true });
+      break;
+    case 'a':
+      console.clear();
+      await showScripts();
+      await showReadme();
+      break;
+    case 'q':
+      process.exit();
     default:
-      console.log("Unknown command. Sorry.");
+      console.log('Unknown command. Sorry.');
   }
 };
 
 const run = async () => {
-  emptyLine();
-  console.log(grey("package.json scripts"));
-  delimiter();
-  emptyLine();
-  await doReadFile({
-    filename: "package.json",
-  }).then((data) => {
-    if (typeof data === "string") {
-      const config = JSON.parse(data);
-      console.log(config.scripts || "No scripts");
-      return;
-    }
-    console.log(options.file, data.toJSON());
-  });
-  emptyLine();
-  delimiter();
-  emptyLine(3);
-  console.log(grey(`${options.file || "README.md"}`));
-  delimiter();
-  emptyLine();
-  await doReadFile({
-    filename: options.file || "README.md",
-  }).then((data) => {
-    if (typeof data === "string") {
-      console.log(data.substr(0, 500));
-      return;
-    }
-    console.log(options.file, data.toJSON());
-  });
-  emptyLine();
-  delimiter();
-  emptyLine(3);
+  await showScripts();
+  await showReadme();
   while (true) {
-    console.log(blue(`What's next? ${COMMANDS_LIST}`));
-    const answer = await askQuestion("");
-    handleAnswer(answer);
+    console.log(yellow(`What's next?`));
+    COMMANDS_LIST.forEach((cmd) => {
+      console.log(cyanBright(cmd));
+    });
+    const answer = await askQuestion('');
+    await handleAnswer(answer);
   }
 };
 

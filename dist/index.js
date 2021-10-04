@@ -42,93 +42,98 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var commander_1 = require("commander");
 var chalk_1 = require("chalk");
-var emptyLine_1 = __importDefault(require("./utils/emptyLine"));
-var delimiter_1 = __importDefault(require("./utils/delimiter"));
-var doReadFile_1 = __importDefault(require("./utils/doReadFile"));
 var askQuestion_1 = __importDefault(require("./utils/askQuestion"));
-// const COMMANDS_LIST = "[h]-help, [s]-search, [q]-quit";
-var COMMANDS_LIST = "[h]-help, [q]-quit";
+var showScripts_1 = __importDefault(require("./utils/showScripts"));
+var showReadme_1 = __importDefault(require("./utils/showReadme"));
+var COMMANDS_LIST = [
+    '[a]-show all',
+    '[rdm]-readme',
+    '[sc]-show scripts',
+    '[h]-help',
+    '[q]-quit',
+];
 var program = new commander_1.Command();
-program.version("0.0.3");
-program
-    .option("-d, --debug", "output extra debugging")
-    .option("-w, --welcome", "Welcome message")
-    .option("-f, --file <type>", "filename");
+program.version('0.0.3');
+program.option('-d, --debug', 'output args');
 program.parse(process.argv);
 var options = program.opts();
 if (options.debug)
     console.log(options);
 if (options.file)
     console.log("- " + options.file);
-if (options.welcome) {
-    console.log((0, chalk_1.blue)("Hello world!"));
-}
 var handleAnswer = function (answer) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (answer) {
-            case "h":
-                console.log((0, chalk_1.grey)("List of options will be here soon."), "Use commands:", (0, chalk_1.blue)("how, how --help"));
-                break;
-            case "q":
+    var _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = answer;
+                switch (_a) {
+                    case 'h': return [3 /*break*/, 1];
+                    case 'sc': return [3 /*break*/, 2];
+                    case 'rdm': return [3 /*break*/, 4];
+                    case 'a': return [3 /*break*/, 6];
+                    case 'q': return [3 /*break*/, 9];
+                }
+                return [3 /*break*/, 10];
+            case 1:
+                console.log((0, chalk_1.grey)('List of options will be here soon.'), 'Use commands:', (0, chalk_1.blue)('how, how --help'));
+                return [3 /*break*/, 11];
+            case 2:
+                console.clear();
+                return [4 /*yield*/, (0, showScripts_1.default)()];
+            case 3:
+                _b.sent();
+                return [3 /*break*/, 11];
+            case 4:
+                console.clear();
+                return [4 /*yield*/, (0, showReadme_1.default)({ full: true })];
+            case 5:
+                _b.sent();
+                return [3 /*break*/, 11];
+            case 6:
+                console.clear();
+                return [4 /*yield*/, (0, showScripts_1.default)()];
+            case 7:
+                _b.sent();
+                return [4 /*yield*/, (0, showReadme_1.default)()];
+            case 8:
+                _b.sent();
+                return [3 /*break*/, 11];
+            case 9:
                 process.exit();
-                break;
-            default:
-                console.log("Unknown command. Sorry.");
+                _b.label = 10;
+            case 10:
+                console.log('Unknown command. Sorry.');
+                _b.label = 11;
+            case 11: return [2 /*return*/];
         }
-        return [2 /*return*/];
     });
 }); };
 var run = function () { return __awaiter(void 0, void 0, void 0, function () {
     var answer;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                (0, emptyLine_1.default)();
-                console.log((0, chalk_1.grey)("package.json scripts"));
-                (0, delimiter_1.default)();
-                (0, emptyLine_1.default)();
-                return [4 /*yield*/, (0, doReadFile_1.default)({
-                        filename: "package.json",
-                    }).then(function (data) {
-                        if (typeof data === "string") {
-                            var config = JSON.parse(data);
-                            console.log(config.scripts || "No scripts");
-                            return;
-                        }
-                        console.log(options.file, data.toJSON());
-                    })];
+            case 0: return [4 /*yield*/, (0, showScripts_1.default)()];
             case 1:
                 _a.sent();
-                (0, emptyLine_1.default)();
-                (0, delimiter_1.default)();
-                (0, emptyLine_1.default)(3);
-                console.log((0, chalk_1.grey)("" + (options.file || "README.md")));
-                (0, delimiter_1.default)();
-                (0, emptyLine_1.default)();
-                return [4 /*yield*/, (0, doReadFile_1.default)({
-                        filename: options.file || "README.md",
-                    }).then(function (data) {
-                        if (typeof data === "string") {
-                            console.log(data.substr(0, 500));
-                            return;
-                        }
-                        console.log(options.file, data.toJSON());
-                    })];
+                return [4 /*yield*/, (0, showReadme_1.default)()];
             case 2:
                 _a.sent();
-                (0, emptyLine_1.default)();
-                (0, delimiter_1.default)();
-                (0, emptyLine_1.default)(3);
                 _a.label = 3;
             case 3:
-                if (!true) return [3 /*break*/, 5];
-                console.log((0, chalk_1.blue)("What's next? " + COMMANDS_LIST));
-                return [4 /*yield*/, (0, askQuestion_1.default)("")];
+                if (!true) return [3 /*break*/, 6];
+                console.log((0, chalk_1.yellow)("What's next?"));
+                COMMANDS_LIST.forEach(function (cmd) {
+                    console.log((0, chalk_1.cyanBright)(cmd));
+                });
+                return [4 /*yield*/, (0, askQuestion_1.default)('')];
             case 4:
                 answer = _a.sent();
-                handleAnswer(answer);
+                return [4 /*yield*/, handleAnswer(answer)];
+            case 5:
+                _a.sent();
                 return [3 /*break*/, 3];
-            case 5: return [2 /*return*/];
+            case 6: return [2 /*return*/];
         }
     });
 }); };
