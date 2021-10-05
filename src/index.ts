@@ -6,6 +6,7 @@ import showScripts from './utils/showScripts';
 import showMarkdownFiles from './utils/showMarkdownFiles';
 import emptyLine from './utils/emptyLine';
 import showReadme from './utils/showReadme';
+import orderPizza from './utils/orderPizza';
 
 const COMMANDS_LIST = [
   '[a]-show all',
@@ -70,16 +71,26 @@ const showOptions = async () => {
   // await showMarkdownFiles();
 };
 
-const run = async () => {
-  await showOptions();
+const commandLine = async () => {
   while (true) {
     console.log(yellow(`What's next?`));
-    COMMANDS_LIST.forEach((cmd) => {
-      console.log(cyanBright(cmd));
-    });
+    commandsList();
     const answer = await askQuestion('');
     await handleAnswer(answer);
   }
+};
+
+const commandsList = async () => {
+  COMMANDS_LIST.forEach((cmd) => {
+    console.log(cyanBright(cmd));
+  });
+};
+
+const run = async () => {
+  await showOptions();
+  // commandsList();
+  await commandLine();
+  // orderPizza();
 };
 
 console.clear();

@@ -136,28 +136,45 @@ var showOptions = function () { return __awaiter(void 0, void 0, void 0, functio
         }
     });
 }); };
-var run = function () { return __awaiter(void 0, void 0, void 0, function () {
+var commandLine = function () { return __awaiter(void 0, void 0, void 0, function () {
     var answer;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!true) return [3 /*break*/, 3];
+                console.log((0, chalk_1.yellow)("What's next?"));
+                commandsList();
+                return [4 /*yield*/, (0, askQuestion_1.default)('')];
+            case 1:
+                answer = _a.sent();
+                return [4 /*yield*/, handleAnswer(answer)];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 0];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+var commandsList = function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        COMMANDS_LIST.forEach(function (cmd) {
+            console.log((0, chalk_1.cyanBright)(cmd));
+        });
+        return [2 /*return*/];
+    });
+}); };
+var run = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, showOptions()];
             case 1:
                 _a.sent();
-                _a.label = 2;
+                // commandsList();
+                return [4 /*yield*/, commandLine()];
             case 2:
-                if (!true) return [3 /*break*/, 5];
-                console.log((0, chalk_1.yellow)("What's next?"));
-                COMMANDS_LIST.forEach(function (cmd) {
-                    console.log((0, chalk_1.cyanBright)(cmd));
-                });
-                return [4 /*yield*/, (0, askQuestion_1.default)('')];
-            case 3:
-                answer = _a.sent();
-                return [4 /*yield*/, handleAnswer(answer)];
-            case 4:
+                // commandsList();
                 _a.sent();
-                return [3 /*break*/, 2];
-            case 5: return [2 /*return*/];
+                return [2 /*return*/];
         }
     });
 }); };
