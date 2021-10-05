@@ -1,3 +1,5 @@
 node_modules
 setup-env.sh
 .log
+.npmrc
+.yarnrc

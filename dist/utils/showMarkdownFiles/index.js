@@ -40,17 +40,54 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var showFileContent_1 = __importDefault(require("../showFileContent"));
-var showReadme = function (options) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, showFileContent_1.default)({
-                    name: 'README.md',
-                    full: options === null || options === void 0 ? void 0 : options.full,
-                })];
-            case 1:
-                _a.sent();
-                return [2 /*return*/];
-        }
+var showFileTitle_1 = __importDefault(require("../showFileTitle"));
+var fs_1 = require("fs");
+var handleFile = function (_a) {
+    var name = _a.name, titleOnly = _a.titleOnly;
+    return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    if (!name) {
+                        return [2 /*return*/];
+                    }
+                    if (!name.toLowerCase().endsWith('.md')) return [3 /*break*/, 2];
+                    if (titleOnly) {
+                        (0, showFileTitle_1.default)({ name: name });
+                        return [2 /*return*/];
+                    }
+                    return [4 /*yield*/, (0, showFileContent_1.default)({
+                            name: name,
+                        })];
+                case 1:
+                    _b.sent();
+                    _b.label = 2;
+                case 2: return [2 /*return*/];
+            }
+        });
+    });
+};
+var showMarkdownFiles = function (options) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, titleOnly;
+    return __generator(this, function (_b) {
+        _a = (options || {}).titleOnly, titleOnly = _a === void 0 ? false : _a;
+        return [2 /*return*/, new Promise(function (res, rej) {
+                (0, fs_1.readdir)('.', function (err, files) { return __awaiter(void 0, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                if (err) {
+                                    return [2 /*return*/];
+                                }
+                                return [4 /*yield*/, Promise.all(files.map(function (name) { return handleFile({ name: name, titleOnly: titleOnly }); }))];
+                            case 1:
+                                _a.sent();
+                                res(null);
+                                return [2 /*return*/];
+                        }
+                    });
+                }); });
+            })];
     });
 }); };
-exports.default = showReadme;
+exports.default = showMarkdownFiles;

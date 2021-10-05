@@ -21,9 +21,13 @@
     "chalk": "^4.1.2",
     "cli-highlight": "^2.1.11",
     "commander": "^8.2.0",
+    "marked": "^3.0.4",
+    "marked-terminal": "^4.2.0",
     "typescript": "^4.4.3"
   },
   "devDependencies": {
+    "@types/marked": "^3.0.1",
+    "@types/marked-terminal": "^3.1.2",
     "@types/node": "^16.10.1",
     "nodemon": "^2.0.13"
   }

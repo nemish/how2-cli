@@ -39,18 +39,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var showFileContent_1 = __importDefault(require("../showFileContent"));
-var showReadme = function (options) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, showFileContent_1.default)({
-                    name: 'README.md',
-                    full: options === null || options === void 0 ? void 0 : options.full,
-                })];
-            case 1:
-                _a.sent();
-                return [2 /*return*/];
-        }
+var chalk_1 = require("chalk");
+var cli_highlight_1 = require("cli-highlight");
+var emptyLine_1 = __importDefault(require("../emptyLine"));
+var delimiter_1 = __importDefault(require("../delimiter"));
+var doReadFile_1 = __importDefault(require("../doReadFile"));
+var handleData = function (_a) {
+    var data = _a.data, full = _a.full;
+    var lines = data.split('\n');
+    var linesToShow = full ? lines : lines.slice(0, 20);
+    console.log((0, cli_highlight_1.highlight)(linesToShow.join('\n'), {
+        language: 'markdown',
+        ignoreIllegals: true,
+    }));
+    if (lines.length !== linesToShow.length) {
+        (0, emptyLine_1.default)();
+        console.log((0, chalk_1.yellow)(linesToShow.length + " of " + lines.length + " lines shown. To see more type \"rdm\" command."));
+    }
+};
+var showReadme = function (_a) {
+    var name = _a.name, full = _a.full;
+    return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    (0, emptyLine_1.default)();
+                    console.log((0, chalk_1.grey)(name));
+                    (0, delimiter_1.default)();
+                    (0, emptyLine_1.default)();
+                    return [4 /*yield*/, (0, doReadFile_1.default)({
+                            filename: name,
+                        })
+                            .then(function (data) {
+                            if (typeof data !== 'string') {
+                                console.log(data.toJSON());
+                                return;
+                            }
+                            handleData({ data: data, full: !!full });
+                        })
+                            .catch(function (err) { return console.log((0, chalk_1.red)("There is no " + full + " file")); })];
+                case 1:
+                    _b.sent();
+                    (0, emptyLine_1.default)();
+                    (0, delimiter_1.default)();
+                    (0, emptyLine_1.default)(3);
+                    return [2 /*return*/];
+            }
+        });
     });
-}); };
+};
 exports.default = showReadme;

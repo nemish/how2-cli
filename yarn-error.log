@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/iaroslav.melnichuk/.volta/tools/image/node/14.15.4/bin/node /Users/iaroslav.melnichuk/.volta/tools/image/yarn/1.22.5/bin/yarn.js publish-package
+  /Users/iaroslav.melnichuk/.volta/tools/image/node/14.15.4/bin/node /Users/iaroslav.melnichuk/.volta/tools/image/yarn/1.22.5/bin/yarn.js watch
 
 PATH: 
   /Users/iaroslav.melnichuk/.volta/tools/image/npm/7.7.4/bin:/Users/iaroslav.melnichuk/.volta/tools/image/yarn/1.22.5/bin:/Users/iaroslav.melnichuk/.volta/tools/image/node/14.15.4/bin:/Users/iaroslav.melnichuk/.volta/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/iaroslav.melnichuk/.cargo/bin:/usr/local/sbin:/usr/local/share/npm/bin:/Users/iaroslav.melnichuk/Workspace/tools/bin:/Users/iaroslav.melnichuk/Workspace/meteor
@@ -27,7 +27,7 @@ Trace:
 npm manifest: 
   {
     "name": "how2-cli",
-    "version": "0.0.16",
+    "version": "0.0.18",
     "main": "index.js",
     "author": "Yaroslav Melnichuk",
     "license": "MIT",
