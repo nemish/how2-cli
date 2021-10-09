@@ -1,8 +1,12 @@
-"use strict";
+'use strict';
 exports.__esModule = true;
 var delimiter = function () {
-    console.log(Array.from({ length: 60 })
-        .map(function () { return "-"; })
-        .join(""));
+  console.log(
+    Array.from({ length: 10 })
+      .map(function () {
+        return '-';
+      })
+      .join(''),
+  );
 };
-exports["default"] = delimiter;
+exports['default'] = delimiter;

@@ -13,34 +13,25 @@ marked.setOptions({
 type Args = {
   full?: boolean;
   name: string;
+  linesCount?: number;
 };
 
 type HandleDataArgs = {
   full: boolean;
   data: string;
+  linesCount?: number;
 };
 
-const handleData = ({ data, full }: HandleDataArgs) => {
+const handleData = ({ data, full, linesCount }: HandleDataArgs) => {
   const lines = data.split('\n');
-  const linesToShow = full ? lines : lines.slice(0, 20);
-  console.log(
-    marked(linesToShow.join('\n')),
-    // highlight(, {
-    //   language: 'markdown',
-    //   ignoreIllegals: true,
-    // }),
-  );
+  const linesToShow = full ? lines : lines.slice(0, linesCount || 20);
+  console.log(marked(linesToShow.join('\n')));
   if (lines.length !== linesToShow.length) {
-    emptyLine();
-    console.log(
-      yellow(
-        `${linesToShow.length} of ${lines.length} lines shown. To see more type "rdm" command.`,
-      ),
-    );
+    console.log(grey(`Lines ${linesToShow.length} of ${lines.length}`));
   }
 };
 
-const showFileContent = async ({ name, full }: Args) => {
+const showFileContent = async ({ name, full, linesCount }: Args) => {
   await doReadFile({
     filename: name,
   })
@@ -49,14 +40,11 @@ const showFileContent = async ({ name, full }: Args) => {
         console.warn('[data in json format]', data.toJSON());
         return;
       }
-      emptyLine();
-      console.log(grey(name));
+      console.log(yellow(name));
       delimiter();
-      emptyLine();
-      handleData({ data, full: !!full });
-      emptyLine();
+      handleData({ data, full: !!full, linesCount });
       delimiter();
-      emptyLine(3);
+      emptyLine(2);
     })
     .catch((err) => console.log(red(`There is no ${full} file`)));
 };

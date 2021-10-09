@@ -1,8 +1,12 @@
-const delimiter = () => {
+type Args = {
+  symbol?: string;
+};
+
+const delimiter = (options?: Args) => {
   console.log(
-    Array.from({ length: 60 })
-      .map(() => "-")
-      .join("")
+    Array.from({ length: 30 })
+      .map(() => options?.symbol || '-')
+      .join(''),
   );
 };
 

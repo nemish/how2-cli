@@ -2,6 +2,8 @@ import showFileContent from '../showFileContent';
 import showFileTitle from '../showFileTitle';
 import { readdir } from 'fs';
 import { bgYellow } from 'chalk';
+import getMarkdownFiles from '../getMarkdownFiles';
+import { title } from 'process';
 
 type Args = {
   titleOnly?: boolean;
@@ -14,36 +16,24 @@ type HandleFileArgs = {
 };
 
 const handleFile = async ({ name, titleOnly }: HandleFileArgs) => {
-  if (!name) {
+  if (titleOnly) {
+    await showFileContent({ name, linesCount: 2 });
     return;
   }
-  if (name.toLowerCase().endsWith('.md')) {
-    if (titleOnly) {
-      showFileTitle({ name });
-      return;
-    }
-    await showFileContent({
-      name,
-    });
-  }
+  await showFileContent({
+    name,
+  });
 };
 
 const showMarkdownFiles = async (options?: Args) => {
-  const { titleOnly = false } = options || {};
-  return new Promise((res, rej) => {
-    readdir('.', async (err, files) => {
-      if (err) {
-        return;
-      }
-      await Promise.all(files.map((name) => handleFile({ name, titleOnly })));
-      res(null);
-    });
-  });
-  // const files = await readdir('.');
-  // await showFileContent({
-  //   name: 'README.md',
-  //   full: options?.full,
-  // });
+  const titleOnly = !!options?.titleOnly;
+  const files = await getMarkdownFiles();
+  if (!files) {
+    return;
+  }
+  return await Promise.all(
+    files.map((name: string) => handleFile({ name, titleOnly })),
+  );
 };
 
 export default showMarkdownFiles;

@@ -42,29 +42,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var chalk_1 = require("chalk");
 var emptyLine_1 = __importDefault(require("../emptyLine"));
 var delimiter_1 = __importDefault(require("../delimiter"));
-var doReadFile_1 = __importDefault(require("../doReadFile"));
-var showScripts = function () { return __awaiter(void 0, void 0, void 0, function () {
+var readPackageJson_1 = __importDefault(require("../readPackageJson"));
+var showScripts = function (items) { return __awaiter(void 0, void 0, void 0, function () {
+    var scripts;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 (0, emptyLine_1.default)();
-                console.log((0, chalk_1.grey)("package.json scripts"));
+                console.log((0, chalk_1.yellow)('package.json scripts'));
                 (0, delimiter_1.default)();
                 (0, emptyLine_1.default)();
-                return [4 /*yield*/, (0, doReadFile_1.default)({
-                        filename: "package.json",
-                    })
-                        .then(function (data) {
-                        if (typeof data === "string") {
-                            var config = JSON.parse(data);
-                            console.log(config.scripts || "No scripts");
-                            return;
-                        }
-                        console.log("package.json", data.toJSON());
-                    })
-                        .catch(function (err) { return console.log((0, chalk_1.red)("There is no package.json file")); })];
+                if (!!items) return [3 /*break*/, 2];
+                return [4 /*yield*/, (0, readPackageJson_1.default)()];
             case 1:
-                _a.sent();
+                scripts = (_a.sent()).scripts;
+                console.log(scripts || 'No scripts');
+                return [3 /*break*/, 3];
+            case 2:
+                console.log(items);
+                _a.label = 3;
+            case 3:
                 (0, emptyLine_1.default)();
                 (0, delimiter_1.default)();
                 (0, emptyLine_1.default)(3);

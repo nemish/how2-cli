@@ -43,7 +43,7 @@ var inquirer_1 = __importDefault(require("inquirer"));
 var inquirer_autocomplete_prompt_1 = __importDefault(require("inquirer-autocomplete-prompt"));
 inquirer_1.default.registerPrompt('autocomplete', inquirer_autocomplete_prompt_1.default);
 var OPTIONS = ['first option 1', 'second 2', 'THIRD 3'];
-var orderPizza = function () { return __awaiter(void 0, void 0, void 0, function () {
+var commandLine = function () { return __awaiter(void 0, void 0, void 0, function () {
     var answers;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -65,4 +65,4 @@ var orderPizza = function () { return __awaiter(void 0, void 0, void 0, function
         }
     });
 }); };
-exports.default = orderPizza;
+exports.default = commandLine;

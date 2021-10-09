@@ -1,21 +1,14 @@
 #! /usr/bin/env node
 import { Command } from 'commander';
-import { blue, cyanBright, grey, yellow } from 'chalk';
+import { cyanBright, grey, yellow } from 'chalk';
 import askQuestion from './utils/askQuestion';
 import showScripts from './utils/showScripts';
 import showMarkdownFiles from './utils/showMarkdownFiles';
 import emptyLine from './utils/emptyLine';
 import showReadme from './utils/showReadme';
-import orderPizza from './utils/orderPizza';
-
-const COMMANDS_LIST = [
-  '[a]-show all',
-  '[l]-options list',
-  '[rdm]-readme',
-  '[sc]-show scripts',
-  '[h]-help',
-  '[q]-quit',
-];
+import commandLine from './utils/commandLine';
+import readPackageJson from './utils/readPackageJson';
+import delimiter from './utils/delimiter';
 
 const program = new Command();
 program.version('0.0.3');
@@ -28,69 +21,35 @@ const options = program.opts();
 if (options.debug) console.log(options);
 if (options.file) console.log(`- ${options.file}`);
 
-const handleAnswer = async (answer: string) => {
-  switch (answer) {
-    case 'h':
-      console.clear();
-      console.log(
-        grey('Help in development.'),
-        'Use commands:',
-        blue('how, how --help'),
-      );
-      emptyLine();
-      break;
-    case 'sc':
-      console.clear();
-      await showScripts();
-      break;
-    case 'rdm':
-      console.clear();
-      await showReadme({ full: true });
-      break;
-    case 'l':
-      console.clear();
-      await showOptions();
-      break;
-    case 'a':
-      console.clear();
-      await showScripts();
-      await showMarkdownFiles();
-      break;
-    case 'q':
-      process.exit();
-    default:
-      console.log('Unknown command. Sorry.');
-  }
-};
-
 const showOptions = async () => {
-  await showScripts();
+  const packageJson = await readPackageJson();
+  emptyLine();
+  console.log(cyanBright(`#### Howpage: ${packageJson.name}`));
+  delimiter({
+    symbol: '*',
+  });
+  await showScripts(packageJson.scripts);
   await showMarkdownFiles({
     titleOnly: true,
   });
+  emptyLine();
   // await showMarkdownFiles();
 };
 
-const commandLine = async () => {
-  while (true) {
-    console.log(yellow(`What's next?`));
-    commandsList();
-    const answer = await askQuestion('');
-    await handleAnswer(answer);
-  }
-};
-
-const commandsList = async () => {
-  COMMANDS_LIST.forEach((cmd) => {
-    console.log(cyanBright(cmd));
-  });
-};
+// const simpleCommandLine = async () => {
+//   while (true) {
+//     console.log(yellow(`What's next?`));
+//     commandsList();
+//     const answer = await askQuestion('');
+//     await handleAnswer(answer);
+//   }
+// };
 
 const run = async () => {
   await showOptions();
   // commandsList();
-  await commandLine();
-  // orderPizza();
+  // await simpleCommandLine();
+  commandLine();
 };
 
 console.clear();

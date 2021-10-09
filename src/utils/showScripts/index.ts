@@ -1,25 +1,20 @@
-import { grey, red } from "chalk";
-import emptyLine from "../emptyLine";
-import delimiter from "../delimiter";
-import doReadFile from "../doReadFile";
+import { yellow, red } from 'chalk';
+import emptyLine from '../emptyLine';
+import delimiter from '../delimiter';
+import doReadFile from '../doReadFile';
+import readPackageJson from '../readPackageJson';
 
-const showScripts = async () => {
+const showScripts = async (items?: any) => {
   emptyLine();
-  console.log(grey("package.json scripts"));
+  console.log(yellow('package.json scripts'));
   delimiter();
   emptyLine();
-  await doReadFile({
-    filename: "package.json",
-  })
-    .then((data) => {
-      if (typeof data === "string") {
-        const config = JSON.parse(data);
-        console.log(config.scripts || "No scripts");
-        return;
-      }
-      console.log("package.json", data.toJSON());
-    })
-    .catch((err) => console.log(red("There is no package.json file")));
+  if (!items) {
+    const { scripts } = await readPackageJson();
+    console.log(scripts || 'No scripts');
+  } else {
+    console.log(items);
+  }
   emptyLine();
   delimiter();
   emptyLine(3);

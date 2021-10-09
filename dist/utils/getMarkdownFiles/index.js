@@ -35,53 +35,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var chalk_1 = require("chalk");
-var marked_1 = __importDefault(require("marked"));
-var marked_terminal_1 = __importDefault(require("marked-terminal"));
-var emptyLine_1 = __importDefault(require("../emptyLine"));
-var delimiter_1 = __importDefault(require("../delimiter"));
-var doReadFile_1 = __importDefault(require("../doReadFile"));
-marked_1.default.setOptions({
-    renderer: new marked_terminal_1.default(),
-});
-var handleData = function (_a) {
-    var data = _a.data, full = _a.full, linesCount = _a.linesCount;
-    var lines = data.split('\n');
-    var linesToShow = full ? lines : lines.slice(0, linesCount || 20);
-    console.log((0, marked_1.default)(linesToShow.join('\n')));
-    if (lines.length !== linesToShow.length) {
-        console.log((0, chalk_1.grey)("Lines " + linesToShow.length + " of " + lines.length));
-    }
-};
-var showFileContent = function (_a) {
-    var name = _a.name, full = _a.full, linesCount = _a.linesCount;
-    return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0: return [4 /*yield*/, (0, doReadFile_1.default)({
-                        filename: name,
-                    })
-                        .then(function (data) {
-                        if (typeof data !== 'string') {
-                            console.warn('[data in json format]', data.toJSON());
-                            return;
+var fs_1 = require("fs");
+var getMarkdownFiles = function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2 /*return*/, new Promise(function (res, rej) {
+                (0, fs_1.readdir)('.', function (err, files) { return __awaiter(void 0, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        if (err) {
+                            return [2 /*return*/];
                         }
-                        console.log((0, chalk_1.yellow)(name));
-                        (0, delimiter_1.default)();
-                        handleData({ data: data, full: !!full, linesCount: linesCount });
-                        (0, delimiter_1.default)();
-                        (0, emptyLine_1.default)(2);
-                    })
-                        .catch(function (err) { return console.log((0, chalk_1.red)("There is no " + full + " file")); })];
-                case 1:
-                    _b.sent();
-                    return [2 /*return*/];
-            }
-        });
+                        return [2 /*return*/, res(files.filter(function (name) { return name.toLowerCase().endsWith('.md'); }))];
+                    });
+                }); });
+            })];
     });
-};
-exports.default = showFileContent;
+}); };
+exports.default = getMarkdownFiles;
