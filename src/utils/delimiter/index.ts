@@ -1,13 +1,11 @@
+import getDelimiterString from '../getDelimiterString';
+
 type Args = {
   symbol?: string;
 };
 
 const delimiter = (options?: Args) => {
-  console.log(
-    Array.from({ length: 30 })
-      .map(() => options?.symbol || '-')
-      .join(''),
-  );
+  console.log(getDelimiterString(options));
 };
 
 export default delimiter;

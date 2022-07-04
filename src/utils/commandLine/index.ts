@@ -7,6 +7,10 @@ import showMarkdownFiles from '../showMarkdownFiles';
 import emptyLine from '../emptyLine';
 import showReadme from '../showReadme';
 import getMarkdownFiles from '../getMarkdownFiles';
+// import { execSync } from 'child_process';
+import getFileContentLines from '../getFileContentLines';
+import drawLines from '../drawLines';
+
 inquirer.registerPrompt('autocomplete', autocomplete);
 
 const COMMANDS_LIST = [
@@ -50,12 +54,17 @@ const handleCommand = async (answer: string, files: string[]) => {
     case 'q':
       process.exit();
     default:
+      console.clear();
       if (answer === 'package.json scripts') {
         await showScripts();
         return;
       }
       if (files.includes(answer)) {
-        await showFileContent({ name: answer, full: true });
+        const lines = await getFileContentLines({
+          name: answer,
+          full: true,
+        });
+        drawLines({ lines });
         return;
       }
       emptyLine();

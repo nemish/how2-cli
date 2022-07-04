@@ -3,3 +3,4 @@ setup-env.sh
 .log
 .npmrc
 .yarnrc
+dist

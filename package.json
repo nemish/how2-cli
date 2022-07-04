@@ -4,9 +4,10 @@
   "main": "index.js",
   "author": "Yaroslav Melnichuk",
   "license": "MIT",
+  "type": "commonjs",
   "volta": {
-    "node": "14.15.4",
-    "yarn": "1.22.5"
+    "node": "16.11.0",
+    "pnpm": "6.30.0"
   },
   "bin": {
     "how": "./dist/index.js"
@@ -27,6 +28,7 @@
     "inquirer-autocomplete-prompt": "^1.4.0",
     "marked": "^3.0.4",
     "marked-terminal": "^4.2.0",
+    "term-size": "^3.0.1",
     "typescript": "^4.4.3"
   },
   "devDependencies": {
